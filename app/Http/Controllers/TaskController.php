@@ -9,11 +9,17 @@ use App\Http\Resources\TaskResource;
 use App\Models\task as ModelsTask;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
     public function index(Request $request){
-        return new TaskCollection(ModelsTask::all());
+        $tasks = QueryBuilder::for(ModelsTask::class)->allowedFilters('done')->
+        defaultSort('-created_at')-> allowedSorts( 'titel', 'done', 'created_at')->paginate();
+        return new TaskCollection($tasks);
+
+
     }
     public function show(Request $request , ModelsTask $task){
         return new TaskResource($task);
@@ -37,3 +43,8 @@ class TaskController extends Controller
     }
      
 }
+
+
+
+
+

@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('titel');
             $table->boolean('done')->default(false);
+            $table->foreignId('creator_id')->constrained('users');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+  
     public function down(): void
     {
         Schema::dropIfExists('tasks');
